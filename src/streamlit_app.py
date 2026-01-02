@@ -16,6 +16,16 @@ def load_model():
 
 classifier = load_model()
 
+def map_to_damage(label):
+    label = label.lower()
+
+    if "hole" in label or "pothole" in label:
+        return "Pothole", "High", "Immediate"
+    elif "crack" in label or "asphalt" in label:
+        return "Crack", "Medium", "Scheduled"
+    else:
+        return "Surface Wear", "Low", "Monitor"
+
 uploaded_file = st.file_uploader(
     "Upload road image",
     type=["jpg", "png", "jpeg"]
@@ -31,6 +41,12 @@ if uploaded_file:
         label = result[0]["label"]
         score = result[0]["score"]
 
-        st.subheader("📝 Analysis Result")
-        st.write(f"**Predicted Label:** {label}")
-        st.write(f"**Confidence:** {score:.2f}")
+        damage, severity, priority = map_to_damage(label)
+
+        st.subheader("📝 SafeStreet Report")
+        
+        st.write(f"**Damage Type:** {damage}")
+        st.write(f"**Severity Level:** {severity}")
+        st.write(f"**Repair Priority:** {priority}")
+        st.write(f"**Model Confidence:** {score:.2f}")
+
