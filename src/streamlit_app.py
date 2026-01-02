@@ -2,6 +2,10 @@ import streamlit as st
 from PIL import Image
 from transformers import pipeline
 
+st.set_option("server.enableXsrfProtection", False)
+st.set_option("server.enableCORS", False)
+
+
 st.set_page_config(page_title="SafeStreet", layout="centered")
 
 st.title("🚧 SafeStreet – Road Damage Detection")
